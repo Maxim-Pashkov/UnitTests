@@ -68,7 +68,7 @@ namespace MyIntProject
 
         public MyInt add(MyInt b)
         {
-            int[] valueA = value;
+            int[] valueA = getValue();
             int[] valueB = b.getValue();
 
             int[] result;
@@ -79,8 +79,8 @@ namespace MyIntProject
             if (isPositiveA == isPositiveB)
             {
                 result = new int[Math.Max(value.Length, valueB.Length) + 1];
-                valueA = value.Skip(1).ToArray().Reverse().ToArray();
-                valueB = valueB.Skip(1).ToArray().Reverse().ToArray();
+                valueA = value.Skip(1).Reverse().ToArray();
+                valueB = valueB.Skip(1).Reverse().ToArray();
 
                 int temp = 0;
                 for (int i = 0; i < result.Length; i++)
@@ -136,12 +136,34 @@ namespace MyIntProject
             return add(new MyInt(valueB));
         }
 
-        /*public MyInt multiply(MyInt b)
+        public MyInt multiply(MyInt b)
         {
+            int[] valueA = getValue();
+            int[] valueB = b.getValue();
 
+            int[] result = new int[Math.Max(valueA.Length, valueB.Length) * 2];
+
+            bool isPositiveA = valueA[0] == 0;
+            bool isPositiveB = valueB[0] == 0;
+
+            valueA = valueA.Skip(1).Reverse().ToArray();
+            valueB = valueB.Skip(1).Reverse().ToArray();
+
+            for(int i = 0; i < valueA.Length; i++)
+            {
+                for(int j = 0, carry = 0; j < valueB.Length || carry > 0; j ++) {
+                    int sum = result[i + j] + valueA[i] * (valueB.Length - 1 < j ? 0 : valueB[j]) + carry;
+                    result[i + j] = sum % 10;
+                    carry = sum / 10;
+                }
+            }
+
+            result[result.Length - 1] = isPositiveA == isPositiveB ? 0 : 1;
+
+            return new MyInt(result.Reverse().ToArray());
         }
 
-        public MyInt divide(MyInt b)
+        /*public MyInt divide(MyInt b)
         {
 
         }*/

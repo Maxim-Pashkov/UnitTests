@@ -129,5 +129,18 @@ namespace MyIntProject
             Assert.AreEqual(d.substract(c).longValue(), -465);
             Assert.AreEqual(c.substract(d).longValue(), 465);
         }
+
+        [Test]
+        public void testMultiply()
+        {
+            MyInt a = new MyInt(456);
+            MyInt b = new MyInt(4356);
+            MyInt c = new MyInt(-5493);
+            MyInt d = new MyInt(-3205);
+
+            Assert.AreEqual(a.multiply(b).longValue(), 1986336);
+            Assert.AreEqual(b.multiply(c).longValue(), -23927508);
+            Assert.AreEqual(c.multiply(d).longValue(), 17605065);
+        }
     }
 }
