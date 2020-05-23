@@ -61,22 +61,71 @@ namespace MyIntProject
 
         public int[] getValue()
         {
-            return value;
+            int[] newValue = new int[value.Length];
+            value.CopyTo(newValue, 0);
+            return newValue;
         }
 
         public MyInt add(MyInt b)
         {
+            int[] valueA = value;
             int[] valueB = b.getValue();
-            int[] result = new int[Math.Max(value.Length, valueB.Length) + 1];
-            int temp = 0;
-            for(int i = 0; i < result.Length - 1; i++)
+
+            int[] result;
+
+            bool isPositiveA = value[0] == 0;
+            bool isPositiveB = valueB[0] == 0;            
+
+            if (isPositiveA == isPositiveB)
             {
-                int firstNum = (value.Length - 2 < i ? 0 : value[value.Length - 1 - i]);
-                int secondNum = (valueB.Length - 2 < i ? 0 : valueB[valueB.Length - 1 - i]);
-                int sum = firstNum + secondNum + temp;
-                result[result.Length - 1 - i] = sum % 10;
-                temp = sum / 10;
+                result = new int[Math.Max(value.Length, valueB.Length) + 1];
+                valueA = value.Skip(1).ToArray().Reverse().ToArray();
+                valueB = valueB.Skip(1).ToArray().Reverse().ToArray();
+
+                int temp = 0;
+                for (int i = 0; i < result.Length; i++)
+                {
+                    int firstNum = valueA.Length - 1 < i ? 0 : valueA[i];
+                    int secondNum = valueB.Length - 1 < i ? 0 : valueB[i];
+                    int sum = firstNum + secondNum + temp;
+                    result[i] = Math.Abs(sum % 10);
+                    temp = sum / 10;
+                    if (i == result.Length - 1)
+                    {
+                        result[result.Length - 1] = isPositiveA ? 0 : 1;
+                    }
+                }                
             }
+            else
+            {
+                result = new int[Math.Max(value.Length, valueB.Length)];
+
+                int[] maxNum = abs().max(b.abs()).getValue();
+                int[] minNum = abs().min(b.abs()).getValue();
+
+                bool resultIsPositive = abs().compareTo(new MyInt(maxNum)) ? valueA[0] == 0 : valueB[0] == 0;
+
+                maxNum = maxNum.Skip(1).ToArray().Reverse().ToArray();
+                minNum = minNum.Skip(1).ToArray().Reverse().ToArray();
+
+                int temp = 0;
+                for(int i = 0; i < result.Length; i++)
+                {
+                    int firstNum = maxNum.Length - 1 < i ? 0 : maxNum[i];
+                    int secondNum = minNum.Length - 1 < i ? 0 : minNum[i];
+                    int diff = firstNum - secondNum - temp;
+                    result[i] = Math.Abs((diff + 10) % 10);
+                    temp = diff < 0 ? 1 : 0;
+                    if(i == result.Length - 1)
+                    {
+                        result[result.Length - 1] = resultIsPositive ? 0 : 1;
+                    }
+                }
+            }
+
+           
+            result = result.Reverse().ToArray();
+            
             return new MyInt(result);
         }
 
@@ -133,8 +182,9 @@ namespace MyIntProject
 
         public MyInt abs()
         {
-            int[] newValue = value;
-            value[0] = 0;
+            int[] newValue = new int[value.Length];
+            value.CopyTo(newValue, 0);
+            newValue[0] = 0;
             return new MyInt(newValue);
         }
 

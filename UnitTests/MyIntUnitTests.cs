@@ -88,5 +88,46 @@ namespace MyIntProject
             Assert.AreEqual(d.min(a), d);
             Assert.AreEqual(c.min(d), d);            
         }
+
+        [Test]
+        public void testAdd()
+        {
+            MyInt a = new MyInt(549);
+            MyInt b = new MyInt(475);
+
+            Assert.AreEqual(a.add(b).longValue(), 1024);
+
+            MyInt c = new MyInt("10000003454");
+
+            Assert.AreEqual(b.add(c).ToString(), "10000003929");
+
+            MyInt d = new MyInt(-500);
+            Assert.AreEqual(d.add(a).longValue(), 49);
+
+            Assert.AreEqual(d.add(b).longValue(), -25);
+
+            Assert.AreEqual((new MyInt(0)).add(new MyInt(-0)).longValue(), 0);
+
+            MyInt e = new MyInt(-3554);
+            Assert.AreEqual(c.add(e).ToString(), "9999999900");
+
+            Assert.AreEqual(e.add(d).longValue(), -4054);
+        }
+
+        [Test]
+        public void testSubstract()
+        {
+            MyInt a = new MyInt(678);
+            MyInt b = new MyInt(1250);
+            MyInt c = new MyInt(-3535);
+            MyInt d = new MyInt(-4000);
+
+            Assert.AreEqual(a.substract(b).longValue(), -572);
+            Assert.AreEqual(b.substract(a).longValue(), 572);
+            Assert.AreEqual(c.substract(b).longValue(), -4785);
+            Assert.AreEqual(b.substract(c).longValue(), 4785);
+            Assert.AreEqual(d.substract(c).longValue(), -465);
+            Assert.AreEqual(c.substract(d).longValue(), 465);
+        }
     }
 }
