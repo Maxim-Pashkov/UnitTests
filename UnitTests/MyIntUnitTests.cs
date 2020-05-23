@@ -81,12 +81,14 @@ namespace MyIntProject
             Assert.AreEqual(c.max(a), c);
             Assert.AreEqual(c.max(b), c);
             Assert.AreEqual(b.max(d), b);
+            Assert.AreEqual(c.max(c), c);
 
             Assert.AreEqual(b.min(d), d.min(b));
             Assert.AreEqual(a.min(b), b);
             Assert.AreEqual(a.min(c), a);
             Assert.AreEqual(d.min(a), d);
-            Assert.AreEqual(c.min(d), d);            
+            Assert.AreEqual(c.min(d), d);
+            Assert.AreEqual(c.min(c), c);
         }
 
         [Test]
@@ -141,6 +143,26 @@ namespace MyIntProject
             Assert.AreEqual(a.multiply(b).longValue(), 1986336);
             Assert.AreEqual(b.multiply(c).longValue(), -23927508);
             Assert.AreEqual(c.multiply(d).longValue(), 17605065);
+        }
+
+        [Test]
+        public void testDivide()
+        {
+            MyInt a = new MyInt(15760);
+            MyInt b = new MyInt(30);
+            MyInt c = new MyInt(-3056);
+            MyInt d = new MyInt(0);
+            MyInt e = new MyInt(-1);
+            MyInt f = new MyInt(-50530);
+
+            Assert.AreEqual(a.divide(b).longValue(), 525);
+            Assert.AreEqual(b.divide(a).longValue(), 0);
+            Assert.AreEqual(d.divide(e).longValue(), 0);
+            Assert.AreEqual(c.divide(d).longValue(), 0);
+            Assert.AreEqual(c.divide(c).longValue(), 1);
+            Assert.AreEqual(f.divide(c).longValue(), 16);
+            Assert.AreEqual(a.divide(c).longValue(), -5);
+
         }
     }
 }

@@ -163,23 +163,85 @@ namespace MyIntProject
             return new MyInt(result.Reverse().ToArray());
         }
 
-        /*public MyInt divide(MyInt b)
+        public MyInt divide(MyInt b)
         {
+            if(b.compareTo(new MyInt(0)))
+            {
+                return new MyInt(0);
+            }
 
-        }*/
+            int[] valueA = getValue();
+            int[] valueB = b.getValue();
+            
+
+            List<int> result = new List<int>();
+
+            bool isPositiveA = valueA[0] == 0;
+            bool isPositiveB = valueB[0] == 0;
+
+            valueA = valueA.Skip(1).ToArray();
+            valueB = valueB.Skip(1).ToArray();
+            
+            int start = 0;
+            int end = 1;
+            while(end <= valueA.Length)
+            {
+                List<int> tempAValue = valueA.Skip(start).Take(end - start).ToList(); ;
+                tempAValue.Insert(0, 0);
+
+                List<int> tempBValue = valueB.ToList();
+                tempBValue.Insert(0, 0);
+
+                MyInt tempA = new MyInt(tempAValue.ToArray());
+                MyInt tempB = new MyInt(tempBValue.ToArray());
+
+                if(tempA.max(tempB).compareTo(tempA))
+                {
+                    
+                    MyInt resultDivide = new MyInt(1);
+                    while(!tempB.multiply(resultDivide).min(tempA).compareTo(tempA))
+                    {
+                        resultDivide = resultDivide.add(new MyInt(1));
+                    }
+                    if(!resultDivide.compareTo(new MyInt(1)))
+                    {
+                        resultDivide = resultDivide.substract(new MyInt(1));
+                    }                   
+                    result.AddRange(resultDivide.getValue().Skip(1));
+                    MyInt resultMultiply = resultDivide.multiply(tempB);
+                    MyInt resultDivideRest = tempA.substract(resultMultiply);
+                    start = end - resultDivideRest.getValue().Length + 1;
+                    for(int i = 0; i + start < end; i++)
+                    {
+                        valueA[i + start] = resultDivideRest.getValue()[i + 1]; 
+                    }
+                }
+                end++;
+            }
+
+            if (result.Count == 0)
+            {
+                result.Insert(0, 0);
+            }
+
+            result.Insert(0, isPositiveA == isPositiveB ? 0 : 1);
+           
+            return new MyInt(result.ToArray());
+        }
 
         public MyInt max(MyInt b)
         {
+            int[] valueA = getValue();
             int[] valueB = b.getValue();
 
-            bool isPositiveA = value[0] == 0;
+            bool isPositiveA = valueA[0] == 0;
             bool isPositiveB = valueB[0] == 0;
             if(isPositiveA != isPositiveB)
             {
                 return isPositiveA ? this : b;
             }
 
-            int lengthA = value.Length;
+            int lengthA = valueA.Length;
             int lengthB = valueB.Length;
             if (lengthA != lengthB)
             {
@@ -189,10 +251,10 @@ namespace MyIntProject
             int numA = 0, numB = 0, i = 1;
             do
             {
-                numA = value[i];
+                numA = valueA[i];
                 numB = valueB[i];
                 i++;
-            } while (numA == numB);
+            } while (numA == numB && i < lengthA);
 
             return numA > numB ? this : b;
         }
