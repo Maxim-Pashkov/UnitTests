@@ -164,5 +164,28 @@ namespace MyIntProject
             Assert.AreEqual(a.divide(c).longValue(), -5);
 
         }
+
+        [Test]
+        public void testGcd()
+        {
+            MyInt a = new MyInt(32);
+            MyInt b = new MyInt(170);
+            MyInt c = new MyInt(17);
+            MyInt d = new MyInt(-50);
+            MyInt f = new MyInt(-1);
+            MyInt e = new MyInt(1);
+            MyInt g = new MyInt(0);
+            MyInt h = new MyInt(15);
+
+            Assert.AreEqual(b.gcd(c).longValue(), 17);
+            Assert.AreEqual(a.gcd(c).longValue(), 1);
+            Assert.AreEqual(b.gcd(d).longValue(), 10);
+            Assert.AreEqual(c.gcd(f).longValue(), 1);
+            Assert.AreEqual(d.gcd(h).longValue(), 5);
+            Assert.AreEqual(b.gcd(b).longValue(), 170);
+            Assert.AreEqual(b.gcd(b.abs()).longValue(), 170);
+            Assert.AreEqual(f.gcd(f).longValue(), 1);
+            Assert.AreEqual(g.gcd(e).longValue(), 1);
+        }
     }
 }

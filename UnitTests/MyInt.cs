@@ -281,6 +281,11 @@ namespace MyIntProject
         {
             MyInt a = abs();
             b = b.abs();
+            if(a.compareTo(new MyInt(0)) || b.compareTo(new MyInt(0)))
+            {
+                return new MyInt(1);
+            }
+
             while(!a.compareTo(b))
             {
                 if (a.max(b) == a)
