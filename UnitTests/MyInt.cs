@@ -8,24 +8,24 @@ namespace MyIntProject
 {
     public class MyInt
     {
-        private int[] value;
+        private byte[] value;
 
         public MyInt(long number)
         {
             bool isPositive = number >= 0;
-            List<int> items = new List<int>();
+            List<byte> items = new List<byte>();
 
             number = Math.Abs(number);
 
             while(number / 10 != 0)
             {
-                int rest = (int)(number % 10);
+                byte rest = (byte)(number % 10);
                 items.Insert(0, rest);
                 number /= 10;
             }
 
-            items.Insert(0, (int) (number % 10));
-            items.Insert(0, isPositive ? 0 : 1);
+            items.Insert(0, (byte) (number % 10));
+            items.Insert(0, (byte) (isPositive ? 0 : 1));
 
             value = validate(items.ToArray());
         }
@@ -33,20 +33,20 @@ namespace MyIntProject
         public MyInt(string number)
         {
             bool isPositive = number[0] != '-';
-            List<int> items = number.Where(num => num != '-').Select(num => int.Parse(num.ToString())).ToList();
-            items.Insert(0, isPositive ? 0 : 1);
+            List<byte> items = number.Where(num => num != '-').Select(num => byte.Parse(num.ToString())).ToList();
+            items.Insert(0, (byte) (isPositive ? 0 : 1));
 
             value = validate(items.ToArray());
         }
 
-        public MyInt(int[] number)
+        public MyInt(byte[] number)
         {
             value = validate(number);            
         }
 
-        private int[] validate(int[] number)
+        private byte[] validate(byte[] number)
         {
-            int[] result = number.Take(1).Concat(number.Skip(1).FirstOrDefault(num => num != 0) != 0 
+            byte[] result = number.Take(1).Concat(number.Skip(1).FirstOrDefault(num => num != 0) != 0 
                     ? number.Skip(1).SkipWhile(num => num == 0) 
                     : number.Skip(1).Take(1)
                 ).ToArray();
@@ -59,26 +59,26 @@ namespace MyIntProject
         }
 
 
-        public int[] getValue()
+        public byte[] getValue()
         {
-            int[] newValue = new int[value.Length];
+            byte[] newValue = new byte[value.Length];
             value.CopyTo(newValue, 0);
             return newValue;
         }
 
         public MyInt add(MyInt b)
         {
-            int[] valueA = getValue();
-            int[] valueB = b.getValue();
+            byte[] valueA = getValue();
+            byte[] valueB = b.getValue();
 
-            int[] result;
+            byte[] result;
 
             bool isPositiveA = value[0] == 0;
             bool isPositiveB = valueB[0] == 0;            
 
             if (isPositiveA == isPositiveB)
             {
-                result = new int[Math.Max(value.Length, valueB.Length) + 1];
+                result = new byte[Math.Max(value.Length, valueB.Length) + 1];
                 valueA = value.Skip(1).Reverse().ToArray();
                 valueB = valueB.Skip(1).Reverse().ToArray();
 
@@ -88,20 +88,20 @@ namespace MyIntProject
                     int firstNum = valueA.Length - 1 < i ? 0 : valueA[i];
                     int secondNum = valueB.Length - 1 < i ? 0 : valueB[i];
                     int sum = firstNum + secondNum + temp;
-                    result[i] = Math.Abs(sum % 10);
+                    result[i] = (byte)Math.Abs(sum % 10);
                     temp = sum / 10;
                     if (i == result.Length - 1)
                     {
-                        result[result.Length - 1] = isPositiveA ? 0 : 1;
+                        result[result.Length - 1] = (byte) (isPositiveA ? 0 : 1);
                     }
                 }                
             }
             else
             {
-                result = new int[Math.Max(value.Length, valueB.Length)];
+                result = new byte[Math.Max(value.Length, valueB.Length)];
 
-                int[] maxNum = abs().max(b.abs()).getValue();
-                int[] minNum = abs().min(b.abs()).getValue();
+                byte[] maxNum = abs().max(b.abs()).getValue();
+                byte[] minNum = abs().min(b.abs()).getValue();
 
                 bool resultIsPositive = abs().compareTo(new MyInt(maxNum)) ? valueA[0] == 0 : valueB[0] == 0;
 
@@ -114,11 +114,11 @@ namespace MyIntProject
                     int firstNum = maxNum.Length - 1 < i ? 0 : maxNum[i];
                     int secondNum = minNum.Length - 1 < i ? 0 : minNum[i];
                     int diff = firstNum - secondNum - temp;
-                    result[i] = Math.Abs((diff + 10) % 10);
+                    result[i] = (byte) Math.Abs((diff + 10) % 10);
                     temp = diff < 0 ? 1 : 0;
                     if(i == result.Length - 1)
                     {
-                        result[result.Length - 1] = resultIsPositive ? 0 : 1;
+                        result[result.Length - 1] = (byte) (resultIsPositive ? 0 : 1);
                     }
                 }
             }
@@ -131,17 +131,17 @@ namespace MyIntProject
 
         public MyInt substract(MyInt b)
         {
-            int[] valueB = b.getValue();
-            valueB[0] = valueB[0] == 0 ? 1 : 0;
+            byte[] valueB = b.getValue();
+            valueB[0] = (byte) (valueB[0] == 0 ? 1 : 0);
             return add(new MyInt(valueB));
         }
 
         public MyInt multiply(MyInt b)
         {
-            int[] valueA = getValue();
-            int[] valueB = b.getValue();
+            byte[] valueA = getValue();
+            byte[] valueB = b.getValue();
 
-            int[] result = new int[Math.Max(valueA.Length, valueB.Length) * 2];
+            byte[] result = new byte[Math.Max(valueA.Length, valueB.Length) * 2];
 
             bool isPositiveA = valueA[0] == 0;
             bool isPositiveB = valueB[0] == 0;
@@ -153,12 +153,12 @@ namespace MyIntProject
             {
                 for(int j = 0, carry = 0; j < valueB.Length || carry > 0; j ++) {
                     int sum = result[i + j] + valueA[i] * (valueB.Length - 1 < j ? 0 : valueB[j]) + carry;
-                    result[i + j] = sum % 10;
+                    result[i + j] = (byte) (sum % 10);
                     carry = sum / 10;
                 }
             }
 
-            result[result.Length - 1] = isPositiveA == isPositiveB ? 0 : 1;
+            result[result.Length - 1] = (byte) (isPositiveA == isPositiveB ? 0 : 1);
 
             return new MyInt(result.Reverse().ToArray());
         }
@@ -170,11 +170,11 @@ namespace MyIntProject
                 return new MyInt(0);
             }
 
-            int[] valueA = getValue();
-            int[] valueB = b.getValue();
+            byte[] valueA = getValue();
+            byte[] valueB = b.getValue();
             
 
-            List<int> result = new List<int>();
+            List<byte> result = new List<byte>();
 
             bool isPositiveA = valueA[0] == 0;
             bool isPositiveB = valueB[0] == 0;
@@ -186,10 +186,10 @@ namespace MyIntProject
             int end = 1;
             while(end <= valueA.Length)
             {
-                List<int> tempAValue = valueA.Skip(start).Take(end - start).ToList(); ;
+                List<byte> tempAValue = valueA.Skip(start).Take(end - start).ToList(); ;
                 tempAValue.Insert(0, 0);
 
-                List<int> tempBValue = valueB.ToList();
+                List<byte> tempBValue = valueB.ToList();
                 tempBValue.Insert(0, 0);
 
                 MyInt tempA = new MyInt(tempAValue.ToArray());
@@ -224,15 +224,15 @@ namespace MyIntProject
                 result.Insert(0, 0);
             }
 
-            result.Insert(0, isPositiveA == isPositiveB ? 0 : 1);
+            result.Insert(0, (byte) (isPositiveA == isPositiveB ? 0 : 1));
            
             return new MyInt(result.ToArray());
         }
 
         public MyInt max(MyInt b)
         {
-            int[] valueA = getValue();
-            int[] valueB = b.getValue();
+            byte[] valueA = getValue();
+            byte[] valueB = b.getValue();
 
             bool isPositiveA = valueA[0] == 0;
             bool isPositiveB = valueB[0] == 0;
@@ -266,7 +266,7 @@ namespace MyIntProject
 
         public MyInt abs()
         {
-            int[] newValue = new int[value.Length];
+            byte[] newValue = new byte[value.Length];
             value.CopyTo(newValue, 0);
             newValue[0] = 0;
             return new MyInt(newValue);

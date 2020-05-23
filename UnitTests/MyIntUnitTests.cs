@@ -25,11 +25,11 @@ namespace MyIntProject
             Assert.AreEqual((new MyInt("-123")).ToString(), "-123");
             Assert.AreEqual((new MyInt("-123")).longValue(), -123);
 
-            Assert.AreEqual((new MyInt(new int[] { 0, 1, 2, 3 })).ToString(), "123");
-            Assert.AreEqual((new MyInt(new int[] { 0, 1, 2, 3 })).longValue(), 123);
+            Assert.AreEqual((new MyInt(new byte[] { 0, 1, 2, 3 })).ToString(), "123");
+            Assert.AreEqual((new MyInt(new byte[] { 0, 1, 2, 3 })).longValue(), 123);
 
-            Assert.AreEqual((new MyInt(new int[] { 1, 1, 2, 3 })).ToString(), "-123");
-            Assert.AreEqual((new MyInt(new int[] { 1, 1, 2, 3 })).longValue(), -123);
+            Assert.AreEqual((new MyInt(new byte[] { 1, 1, 2, 3 })).ToString(), "-123");
+            Assert.AreEqual((new MyInt(new byte[] { 1, 1, 2, 3 })).longValue(), -123);
 
             Assert.AreEqual((new MyInt(0)).ToString(), "0");
             Assert.AreEqual((new MyInt(0)).longValue(), 0);
@@ -43,26 +43,26 @@ namespace MyIntProject
             Assert.AreEqual((new MyInt("-0")).ToString(), "0");
             Assert.AreEqual((new MyInt("-0")).longValue(), 0);
 
-            Assert.AreEqual((new MyInt(new int[] { 0, 0 })).ToString(), "0");
-            Assert.AreEqual((new MyInt(new int[] { 0, 0 })).longValue(), 0);
+            Assert.AreEqual((new MyInt(new byte[] { 0, 0 })).ToString(), "0");
+            Assert.AreEqual((new MyInt(new byte[] { 0, 0 })).longValue(), 0);
 
-            Assert.AreEqual((new MyInt(new int[] { 1, 0 })).ToString(), "0");
-            Assert.AreEqual((new MyInt(new int[] { 1, 0 })).longValue(), 0);
+            Assert.AreEqual((new MyInt(new byte[] { 1, 0 })).ToString(), "0");
+            Assert.AreEqual((new MyInt(new byte[] { 1, 0 })).longValue(), 0);
         }
 
         [Test]
         public void testCompareTo()
         {
-            Assert.IsTrue((new MyInt(new int[] { 1, 1, 2 })).compareTo(new MyInt(-12)));
-            Assert.IsTrue((new MyInt("-0")).compareTo(new MyInt(new int[] { 0, 0, 0, 0 })));
+            Assert.IsTrue((new MyInt(new byte[] { 1, 1, 2 })).compareTo(new MyInt(-12)));
+            Assert.IsTrue((new MyInt("-0")).compareTo(new MyInt(new byte[] { 0, 0, 0, 0 })));
             Assert.IsTrue((new MyInt(4213)).compareTo(new MyInt("04213")));
-            Assert.IsFalse((new MyInt(130)).compareTo(new MyInt(new int[] { 1, 1, 3, 0 })));
+            Assert.IsFalse((new MyInt(130)).compareTo(new MyInt(new byte[] { 1, 1, 3, 0 })));
         }
 
         [Test]
         public void testAbs()
         {
-            Assert.AreEqual((new MyInt(new int[] { 1, 1, 3 })).abs().longValue(), 13);
+            Assert.AreEqual((new MyInt(new byte[] { 1, 1, 3 })).abs().longValue(), 13);
             Assert.AreEqual((new MyInt("-0250")).abs().longValue(), 250);
             Assert.AreEqual((new MyInt(520)).abs().longValue(), 520);
             Assert.AreEqual((new MyInt("-12")).abs().longValue(), 12);
